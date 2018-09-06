@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 #logic by itself in module
 
 import wx
@@ -7,10 +9,32 @@ from wx import xrc
 #import txt_database
 import bb_utils
 import pyperclip
+import copy
 
 #dbpath = "/Users/kraussry/Google Drive/journal_and_work_log.csv"
 #mydb = txt_database.db_from_file(dbpath)
 
+def krauss_to_ascii(textin):
+    """My attempt to convert a wx textctrl output to ascii intelligently.
+       Note that u'\xa0' is an unbreakable space."""
+    replist = [('“','"'), \
+               ('”','"'), \
+               (u'\xa0',' ')
+               ]
+    textout = copy.copy(textin)
+    for f, r in replist:
+        textout = textout.replace(f,r)
+
+    print('\n')
+    try:
+        textout.encode('ascii')
+        print('ascii conversion successful # <----')
+    except:
+        print('ascii conversion FAILED # !?!?!?!?')
+    print('\n')
+    return textout
+
+    
 class MyApp(wx.App):
     def on_file_open(self, evt):
         print("hello from on_file_open")
@@ -48,13 +72,26 @@ class MyApp(wx.App):
 
     def OnText(self, evt):
         textin = self.title_textctrl.GetValue()
+        print('textin = ')
+        print(textin)
         #if wx.TheClipboard.Open():
         textout = bb_utils.pdf_link_download_maker_no_print(textin)
+        print('textout = ')
+        print(textout)
         self.set_out(textout)
         #wx.TheClipboard.SetData(wx.TextDataObject(textout))
         #wx.TheClipboard.Close()
         #else:
         #    print("failed to open clipboard")
+
+
+    def OnCopy(self, evt):
+        textout = self.output_textctrl.GetValue()
+        ascii_text = krauss_to_ascii(textout)
+        pyperclip.copy(ascii_text)
+        print("copied to clipboard:")
+        print('\n')
+        print(textout)
 
 
     def on_download_only(self, event):
@@ -73,6 +110,8 @@ class MyApp(wx.App):
                         id=xrc.XRCID("process_download_only_menu"))
         self.frame.Bind(wx.EVT_MENU, self.OnText, \
                         id=xrc.XRCID("process_normal_menu"))
+        self.frame.Bind(wx.EVT_MENU, self.OnCopy, \
+                        id=xrc.XRCID("copy_menu"))
         self.frame.SetMenuBar(self.menuBar)
         self.panel = xrc.XRCCTRL(self.frame, 'panel_1')
         #self.frame.Bind(wx.EVT_BUTTON, self.OnSubmit, id=xrc.XRCID('button'))
@@ -89,6 +128,8 @@ class MyApp(wx.App):
         accelEntries.append((wx.ACCEL_CTRL, ord('S'), xrc.XRCID("file_save_menu")))
         accelEntries.append((wx.ACCEL_CTRL, ord('d'), xrc.XRCID("process_download_only_menu")))
         accelEntries.append((wx.ACCEL_CTRL, ord('p'), xrc.XRCID("process_normal_menu")))
+        accelEntries.append((wx.ACCEL_CTRL|wx.ACCEL_SHIFT, ord('c'), xrc.XRCID("copy_menu")))
+        
         
 
         accelTable  = wx.AcceleratorTable(accelEntries)

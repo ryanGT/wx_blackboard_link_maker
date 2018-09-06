@@ -61,5 +61,11 @@
                 <label>Process Download Only</label>
             </object>	    
 	</object>	
+        <object class="wxMenu" name="Edit_Menu">
+	    <label>Edit</label>
+            <object class="wxMenuItem" name="copy_menu">
+                <label>Copy (as ASCII)</label>
+            </object>
+	</object>	
     </object>
 </resource>
