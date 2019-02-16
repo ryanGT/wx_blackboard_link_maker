@@ -11,6 +11,10 @@ import bb_utils
 import pyperclip
 import copy
 
+#https://drive.google.com/file/d/1zzY_zN6DJMCZtohuMc0lgB8gzxOE01u5/view?usp=sharing
+#https://drive.google.com/open?id=1zzY_zN6DJMCZtohuMc0lgB8gzxOE01u5
+#https://drive.google.com/file/d/1y-jRZIgiafMChmB25F3qwg7_Y_qv0v1J/view?usp=sharing
+
 #dbpath = "/Users/kraussry/Google Drive/journal_and_work_log.csv"
 #mydb = txt_database.db_from_file(dbpath)
 
@@ -75,7 +79,11 @@ class MyApp(wx.App):
         print('textin = ')
         print(textin)
         #if wx.TheClipboard.Open():
-        textout = bb_utils.pdf_link_download_maker_no_print(textin)
+        if textin.find("https://youtu.be") == 0:
+            # this is a YouTube link
+            textout = bb_utils.youtube_link(textin)
+        else:
+            textout = bb_utils.pdf_link_download_maker_no_print(textin)
         print('textout = ')
         print(textout)
         self.set_out(textout)
@@ -99,6 +107,21 @@ class MyApp(wx.App):
         #if wx.TheClipboard.Open():
         textout = bb_utils.pdf_link_download_only_no_print(textin)
         self.set_out(textout)        
+
+
+    def on_open_only(self, event):
+        textin = self.title_textctrl.GetValue()
+        #if wx.TheClipboard.Open():
+        textout = bb_utils.link_open_only_no_print(textin)
+        self.set_out(textout)        
+
+
+    def on_pure_link(self, event):
+        textin = self.title_textctrl.GetValue()
+        #if wx.TheClipboard.Open():
+        textout = bb_utils.link_pure_open_no_print(textin)
+        self.set_out(textout)        
+
         
     def init_frame(self):
         self.frame = self.res.LoadFrame(None, 'frame')
@@ -108,8 +131,13 @@ class MyApp(wx.App):
         self.frame.Bind(wx.EVT_BUTTON, self.on_file_open, id=xrc.XRCID("file_path_button"))
         self.frame.Bind(wx.EVT_MENU, self.on_download_only, \
                         id=xrc.XRCID("process_download_only_menu"))
+        self.frame.Bind(wx.EVT_MENU, self.on_open_only, \
+                        id=xrc.XRCID("process_open_only_menu"))
         self.frame.Bind(wx.EVT_MENU, self.OnText, \
                         id=xrc.XRCID("process_normal_menu"))
+        self.frame.Bind(wx.EVT_MENU, self.on_pure_link, \
+                        id=xrc.XRCID("process_pure_link_menu"))
+        
         self.frame.Bind(wx.EVT_MENU, self.OnCopy, \
                         id=xrc.XRCID("copy_menu"))
         self.frame.SetMenuBar(self.menuBar)
@@ -124,10 +152,12 @@ class MyApp(wx.App):
         
         # set up accelerators
         accelEntries = []
-        accelEntries.append((wx.ACCEL_CTRL, ord('O'), xrc.XRCID("file_open_menu")))
-        accelEntries.append((wx.ACCEL_CTRL, ord('S'), xrc.XRCID("file_save_menu")))
+        #accelEntries.append((wx.ACCEL_CTRL, ord('O'), xrc.XRCID("file_open_menu")))
+        #accelEntries.append((wx.ACCEL_CTRL, ord('S'), xrc.XRCID("file_save_menu")))
         accelEntries.append((wx.ACCEL_CTRL, ord('d'), xrc.XRCID("process_download_only_menu")))
-        accelEntries.append((wx.ACCEL_CTRL, ord('p'), xrc.XRCID("process_normal_menu")))
+        accelEntries.append((wx.ACCEL_CTRL, ord('n'), xrc.XRCID("process_normal_menu")))
+        accelEntries.append((wx.ACCEL_CTRL, ord('o'), xrc.XRCID("process_open_only_menu")))
+        accelEntries.append((wx.ACCEL_CTRL, ord('p'), xrc.XRCID("process_pure_link_menu")))
         accelEntries.append((wx.ACCEL_CTRL|wx.ACCEL_SHIFT, ord('c'), xrc.XRCID("copy_menu")))
         
         
