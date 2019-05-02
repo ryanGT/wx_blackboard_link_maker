@@ -15,9 +15,6 @@ import copy
 #https://drive.google.com/open?id=1zzY_zN6DJMCZtohuMc0lgB8gzxOE01u5
 #https://drive.google.com/file/d/1y-jRZIgiafMChmB25F3qwg7_Y_qv0v1J/view?usp=sharing
 
-#dbpath = "/Users/kraussry/Google Drive/journal_and_work_log.csv"
-#mydb = txt_database.db_from_file(dbpath)
-
 def krauss_to_ascii(textin):
     """My attempt to convert a wx textctrl output to ascii intelligently.
        Note that u'\xa0' is an unbreakable space."""
