@@ -106,6 +106,14 @@ class MyApp(wx.App):
         self.set_out(textout)        
 
 
+    def on_gslides_download(self, event):
+        textin = self.title_textctrl.GetValue()
+        #if wx.TheClipboard.Open():
+        textout = bb_utils.download_for_gslides(textin)
+        self.set_out(textout)        
+
+        
+
     def on_open_only(self, event):
         textin = self.title_textctrl.GetValue()
         #if wx.TheClipboard.Open():
@@ -113,12 +121,33 @@ class MyApp(wx.App):
         self.set_out(textout)        
 
 
+    def on_open_link_only(self, event):
+        textin = self.title_textctrl.GetValue()
+        #if wx.TheClipboard.Open():
+        textout = bb_utils.link_open_link_only(textin)
+        self.set_out(textout)        
+
+
     def on_pure_link(self, event):
         textin = self.title_textctrl.GetValue()
         #if wx.TheClipboard.Open():
         textout = bb_utils.link_pure_open_no_print(textin)
-        self.set_out(textout)        
+        self.set_out(textout)
 
+
+    def on_markdown_juptyer_download(self, event):
+        textin = self.title_textctrl.GetValue()
+        #if wx.TheClipboard.Open():
+        textout = bb_utils.markdown_jupyter_download_link(textin)
+        self.set_out(textout)
+        
+
+    def on_markdown_pdf_open(self, event):
+        textin = self.title_textctrl.GetValue()
+        #if wx.TheClipboard.Open():
+        textout = bb_utils.markdown_pdf_open_link(textin)
+        self.set_out(textout)
+        
         
     def init_frame(self):
         self.frame = self.res.LoadFrame(None, 'frame')
@@ -130,11 +159,21 @@ class MyApp(wx.App):
                         id=xrc.XRCID("process_download_only_menu"))
         self.frame.Bind(wx.EVT_MENU, self.on_open_only, \
                         id=xrc.XRCID("process_open_only_menu"))
+        self.frame.Bind(wx.EVT_MENU, self.on_open_link_only, \
+                        id=xrc.XRCID("process_open_link_only_menu"))        
         self.frame.Bind(wx.EVT_MENU, self.OnText, \
                         id=xrc.XRCID("process_normal_menu"))
         self.frame.Bind(wx.EVT_MENU, self.on_pure_link, \
                         id=xrc.XRCID("process_pure_link_menu"))
-        
+        self.frame.Bind(wx.EVT_MENU, self.on_markdown_juptyer_download, \
+                        id=xrc.XRCID("process_markdown_jupyter_download_menu"))
+        self.frame.Bind(wx.EVT_MENU, self.on_markdown_pdf_open, \
+                        id=xrc.XRCID("process_markdown_pdf_open_menu"))
+        self.frame.Bind(wx.EVT_MENU, self.on_gslides_download, \
+                id=xrc.XRCID("process_gslides_download_menu"))
+
+
+                        
         self.frame.Bind(wx.EVT_MENU, self.OnCopy, \
                         id=xrc.XRCID("copy_menu"))
         self.frame.SetMenuBar(self.menuBar)
@@ -154,8 +193,12 @@ class MyApp(wx.App):
         accelEntries.append((wx.ACCEL_CTRL, ord('d'), xrc.XRCID("process_download_only_menu")))
         accelEntries.append((wx.ACCEL_CTRL, ord('n'), xrc.XRCID("process_normal_menu")))
         accelEntries.append((wx.ACCEL_CTRL, ord('o'), xrc.XRCID("process_open_only_menu")))
-        accelEntries.append((wx.ACCEL_CTRL, ord('p'), xrc.XRCID("process_pure_link_menu")))
+        accelEntries.append((wx.ACCEL_CTRL, ord('l'), xrc.XRCID("process_pure_link_menu")))
+        accelEntries.append((wx.ACCEL_CTRL, ord('j'), xrc.XRCID("process_markdown_jupyter_download_menu")))
+        accelEntries.append((wx.ACCEL_CTRL, ord('m'), xrc.XRCID("process_markdown_jupyter_download_menu"))) 
+        accelEntries.append((wx.ACCEL_CTRL, ord('p'), xrc.XRCID("process_markdown_pdf_open_menu")))
         accelEntries.append((wx.ACCEL_CTRL|wx.ACCEL_SHIFT, ord('c'), xrc.XRCID("copy_menu")))
+        accelEntries.append((wx.ACCEL_CTRL, ord('g'), xrc.XRCID("process_gslides_download_menu")))
         
         
 

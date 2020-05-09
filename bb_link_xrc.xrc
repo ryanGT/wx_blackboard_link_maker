@@ -5,7 +5,7 @@
     <object class="wxFrame" name="frame">
         <size>800, 300</size>
         <style>wxDEFAULT_FRAME_STYLE</style>
-        <title>frame</title>
+        <title>BB Link Maker</title>
         <object class="wxBoxSizer">
             <orient>wxVERTICAL</orient>
             <object class="sizeritem">
@@ -63,9 +63,21 @@
             <object class="wxMenuItem" name="process_open_only_menu">
                 <label>Process Open Only</label>
             </object>	    
+            <object class="wxMenuItem" name="process_open_link_only_menu">
+                <label>Process Open Link Only</label>
+            </object>	    
             <object class="wxMenuItem" name="process_pure_link_menu">
                 <label>Process Pure Link</label>
-            </object>	    
+            </object>
+            <object class="wxMenuItem" name="process_markdown_jupyter_download_menu">
+                <label>Process Markdown Jupyter Download</label>
+            </object>
+            <object class="wxMenuItem" name="process_markdown_pdf_open_menu">
+                <label>Process Markdown PDF Open</label>
+            </object>
+            <object class="wxMenuItem" name="process_gslides_download_menu">
+                <label>Process Gslides Download</label>
+            </object>
 	</object>	
         <object class="wxMenu" name="Edit_Menu">
 	    <label>Edit</label>
